@@ -73,7 +73,3 @@ app.listen(5000, () => {
 });
 
 
-
-
-
-// mongodb+srv://9297:<db_password>@cluster0.9tlk4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
