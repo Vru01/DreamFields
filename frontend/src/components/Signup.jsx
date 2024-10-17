@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -12,29 +14,42 @@ const Signup = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Resetting the fields after submission
-    setName('');
-    setEmail('');
-    setAge('');
-    setPassword('');
-    setConfirmPassword('');
-
     try {
-      await axios.post('http://your-backend-url/signup', {
+      await axios.post('http://localhost:5000/api/v1/signup', {
         name,
         email,
         age,
         password,
       });
-      // Handle successful signup here
+      toast.success('Signup successful!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      // Reset form fields after submission
+      setName('');
+      setEmail('');
+      setAge('');
+      setPassword('');
+      setConfirmPassword('');
     } catch (error) {
       console.error('Error during signup:', error);
-      // Handle error here
+      toast.error('Signup failed! Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -133,6 +148,7 @@ const Signup = () => {
           </button>
         </p>
       </div>
+      <ToastContainer /> {/* Add ToastContainer here */}
     </div>
   );
 };

@@ -1,10 +1,12 @@
 import React from 'react';
 import logo from '../assets/img/logo.png'; // Importing the logo image
+import CButton from './Common/CButton';
 
 const Navbar = () => {
   return (
     <header className="header d-flex align-items-center fixed-top">
       <div className="container-fluid container-xl position-relative d-flex align-items-center">
+        
         <a href="#hero" className="logo d-flex align-items-center me-auto">
           <img src={logo} alt="DreamFields Logo" className="img-fluid" /> {/* Use the imported logo */}
           <h1 className="sitename">DreamFields</h1>
@@ -18,6 +20,12 @@ const Navbar = () => {
           </ul>
         </nav>
         <a className="btn-getstarted" href="#about">Get Started</a>
+        
+        <div className='p-2 space-x-2'>
+          <CButton text={"login"}  link={"/login"} color={true} />
+          <CButton text={"signup"}  link={"/signup"} color={true} />
+        </div>
+
       </div>
     </header>
   );

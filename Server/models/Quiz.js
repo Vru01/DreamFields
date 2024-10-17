@@ -18,4 +18,13 @@ const quizSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Quiz', quizSchema);
+const recommendationSchema = new mongoose.Schema({
+  quizId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Quiz' },
+  recommendedFields: [{ field: String }]
+});
+
+// Exporting both models
+const Quiz = mongoose.model('Quiz', quizSchema);
+const Recommendation = mongoose.model('Recommendation', recommendationSchema);
+
+module.exports = { Quiz, Recommendation };

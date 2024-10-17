@@ -1,4 +1,4 @@
-const Quiz = require('../models/Quiz');
+const {Quiz , Recommendation } = require('../models/Quiz');
 const axios = require('axios'); 
 const { PythonShell } = require('python-shell');
 
@@ -60,6 +60,7 @@ exports.getQuiz = async (req, res) => {
     }
 };
 
+
 exports.submitAnswers = async (req, res) => {
     try {
         const { answers } = req.body; // Get answers from the request body
@@ -72,15 +73,30 @@ exports.submitAnswers = async (req, res) => {
         const quizId = latestQuiz._id; // Get quizId from the latest quiz
 
         // Validate the input
-        if (!answers) {
-            return res.status(400).json({ message: 'Answers are required' });
+        if (!answers || !quizId ) {
+            return res.status(400).json({ message: 'Answers and quiz fields are required' });
         }
 
+        // const formattedAnswers = {};
+        // for (let key in answers) {
+        //     // Convert both the key (question number) and value (answer) to strings
+        //     formattedAnswers[String(key)] = String(answers[key]);
+        // }
+        // const answerPayload = {
+        //     answers: answers
+        // };
+        // console.log(answerPayload)
+        // console.log(JSON.stringify(answerPayload, null, 2));
+        // console.log(answerPayload);
+        
         // Prepare the answer payload for the AI model
         const answerPayload = {
             question: latestQuiz.questions, // Use questions from the latest quiz
-            response: answers // Pass user-selected answers
+            // response: answers // Pass user-selected answers
+            answers: answers 
         };
+        console.log(answerPayload) ;
+        
 
         // Call the recommendations logic
         const recommendations = await getRecommendations(answerPayload); // Define this function
@@ -88,6 +104,9 @@ exports.submitAnswers = async (req, res) => {
         return res.status(200).json({
             message: 'Answers submitted successfully',
             recommendations, // Include recommendations in the response
+            // recommendations: {
+            //     recommended_fields: recommendations.recommended_fields.length > 0 ? recommendations.recommended_fields : [{ field: "Hello" }]
+            // } 
         });
     } catch (err) {
         return res.status(500).json({ message: 'Error submitting answers', error: err.message });
@@ -101,10 +120,11 @@ async function getRecommendations(answerPayload) {
 
         // Construct the prompt based on the input structure you provided
         const prompt = {
-            answer: `(Give me recommendations based on this quiz) {\"question\": ${JSON.stringify(answerPayload.question)}, \"response\": ${JSON.stringify(answerPayload.response)}}. Based on this, recommend fields of interest for me in a structured JSON format. Do not give any traits just array of objects named as recommended_fields inside of it the field. No description required keep this names same always. Give me the overall recommendation based on the quiz do not go question wise recommendation field.`
+            answer: `(Give me recommendations based on this quiz) {\"question\": ${JSON.stringify(answerPayload.question)}, \"answers\": ${JSON.stringify(answerPayload.answers)}}. Based on this, recommend fields of interest for me in a structured JSON format. Do not give any traits just array of objects named as recommended_fields inside of it the field. No description required keep this names same always. Give me the overall recommendation based on the quiz do not go question wise recommendation field.`
         };
 
         // Send the answer payload to the Python script
+        console.log("python" , JSON.stringify(prompt)) ;
         pyshell.send(JSON.stringify(prompt));
 
         pyshell.on('message', function (message) {
@@ -124,3 +144,85 @@ async function getRecommendations(answerPayload) {
         });
     });
 }
+
+
+
+
+// exports.submitAnswers = async (req, res) => {
+//     try {
+//         const { answers } = req.body; // Get answers from the request body
+//         const latestQuiz = await Quiz.findOne().sort({ createdAt: -1 }); // Get the latest quiz
+
+//         if (!latestQuiz) {
+//             return res.status(404).json({ message: 'No quizzes found' });
+//         }
+
+//         const quizId = latestQuiz._id; // Get quizId from the latest quiz
+
+//         // Validate the input
+//         if (!answers) {
+//             return res.status(400).json({ message: 'Answers are required' });
+//         }
+
+//         // Prepare the answer payload for the AI model
+//         const answerPayload = {
+//             question: latestQuiz.questions, // Use questions from the latest quiz
+//             response: answers // Pass user-selected answers
+//         };
+
+//         // Call the recommendations logic
+//         const recommendations = await getRecommendations(answerPayload); // Define this function
+
+//         // Store the recommendations in the database
+//         const recommendation = new Recommendation({
+//             quizId: quizId,
+//             recommendedFields: recommendations.recommended_fields
+//         });
+//         await recommendation.save(); // Save the recommendations to the database
+
+//         // Fetch recommendations from the database
+//         const storedRecommendations = await Recommendation.findOne({ quizId: quizId });
+
+//         if (!storedRecommendations) {
+//             return res.status(404).json({ message: 'No recommendations found for this quiz' });
+//         }
+
+//         return res.status(200).json({
+//             message: 'Answers submitted successfully and recommendations fetched',
+//             recommendations: storedRecommendations.recommendedFields // Return the array of recommended fields
+//         });
+//     } catch (err) {
+//         return res.status(500).json({ message: 'Error submitting answers', error: err.message });
+//     }
+// };
+
+// // Function to get recommendations from the Python model
+// async function getRecommendations(answerPayload) {
+//     return new Promise((resolve, reject) => {
+//         let pyshell = new PythonShell('./main.py');
+
+//         // Construct the prompt based on the input structure you provided
+//         const prompt = {
+//             answer: `(Give me recommendations based on this quiz) {\"question\": ${JSON.stringify(answerPayload.question)}, \"response\": ${JSON.stringify(answerPayload.response)}}. Based on this, recommend fields of interest for me in a structured JSON format. Do not give any traits just array of objects named as recommended_fields inside of it the field. No description required keep this names same always. Give me the overall recommendation based on the quiz do not go question wise recommendation field.`
+//         };
+
+//         // Send the answer payload to the Python script
+//         pyshell.send(JSON.stringify(prompt));
+
+//         pyshell.on('message', function (message) {
+//             try {
+//                 const recommendations = JSON.parse(message);
+//                 resolve(recommendations);
+//             } catch (err) {
+//                 reject(new Error("Failed to parse recommendations from Python."));
+//             }
+//         });
+
+//         // Handle errors in executing the Python script
+//         pyshell.end((err) => {
+//             if (err) {
+//                 reject(new Error('Error executing Python script: ' + err.message));
+//             }
+//         });
+//     });
+// }

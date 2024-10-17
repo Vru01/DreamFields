@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the toast styles
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,14 +16,35 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await axios.post('http://your-backend-url/login', {
+      const response = await axios.post('http://localhost:5000/api/v1/login', {
         email,
         password,
       });
-      // Handle successful login here
+
+      toast.success('Logged in successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      // Redirect to dashboard or another page after login
+      navigate('/dashboard');
     } catch (error) {
-      console.error('Error during login:', error);
-      // Handle error here
+      const errorMessage = error.response?.data?.message || 'Failed to login. Please try again.';
+      console.error('Error during login:', errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -47,7 +70,7 @@ const Login = () => {
               <input
                 type={passwordVisible ? 'text' : 'password'}
                 value={password}
-                placeholder=''
+                placeholder='Enter your password'
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -77,6 +100,8 @@ const Login = () => {
             Create Account
           </button>
         </p>
+        {/* Toast container to show toast notifications */}
+        <ToastContainer />
       </div>
     </div>
   );

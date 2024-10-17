@@ -26,24 +26,3 @@ const Homepage = () => {
 export default Homepage;
 
 
-
-// // import photo from '../assets/photo.png'
-// import FieldSlider from '../components/FieldSlider';
-
-// const Homepage = () => {
-//   return (
-//     <>
-//     <div className='BackGround'>
-
-
-//     </div>
-
-//     {/* <div className='text-white bg-red-400  py-10'>
-
-//       <FieldSlider/>
-//     </div> */}
-//     </>
-//   );
-// };
-
-// export default Homepage;
