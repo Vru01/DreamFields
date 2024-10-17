@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: url('https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  .login-container, .signup-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Add some transparency */
+  }
+  

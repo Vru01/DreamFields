@@ -4,6 +4,7 @@ import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the toast styles
+import './background.css' ;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -49,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-blue-600">
+    <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">Log In</h2>
         <form onSubmit={handleSubmit} className="space-y-4">

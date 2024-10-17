@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
 import "../Style/main.css";
 
-
-// Importing images correctly
-import feature1 from '../../assets/img/features-1.jpg'; // Adjust path if necessary
-import feature2 from '../../assets/img/features-2.jpg'; // Adjust path if necessary
-import feature3 from '../../assets/img/features-3.jpg'; // Adjust path if necessary
-import tab1 from '../../assets/img/tabs-1.jpg'; // Adjust path if necessary
-import tab2 from '../../assets/img/tabs-2.jpg'; // Adjust path if necessary
-import tab3 from '../../assets/img/tabs-3.jpg'; // Adjust path if necessary
+import feature1 from '../../assets/img/features-1.jpg';
+import feature2 from '../../assets/img/features-2.jpg';
+import feature3 from '../../assets/img/features-3.jpg';
+import tab1 from '../../assets/img/tabs-1.jpg';
+import tab2 from '../../assets/img/tabs-2.jpg';
+import tab3 from '../../assets/img/tabs-3.jpg';
 
 const Features = () => {
   const [activeTab, setActiveTab] = useState(1);
 
-  // Data for tabs and features
+  // Updated content for career guidance
   const featuresData = [
     {
       id: 1,
-      title: 'Modi sit est dela pireda nest',
-      description: 'Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      title: 'Explore Your Strengths',
+      description: 'Discover what you excel at through our personalized assessments and guidance tools, helping you identify your key strengths.',
       imgSrc: tab1,
     },
     {
       id: 2,
-      title: 'Unde praesenti mara setra le',
-      description: 'Recusandae atque nihil. Delectus vitae non similique magnam molestiae sapiente similique tenetur aut voluptates sed voluptas ipsum voluptas',
+      title: 'Career Paths Tailored to You',
+      description: 'We provide insights into a wide range of career options that align with your personal interests and strengths.',
       imgSrc: tab2,
     },
     {
       id: 3,
-      title: 'Pariatur explica nitro dela',
-      description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Debitis nulla est maxime voluptas dolor aut',
+      title: 'Actionable Career Plans',
+      description: 'Get step-by-step plans and resources to pursue your chosen career path, including educational opportunities and certifications.',
       imgSrc: tab3,
     },
   ];
@@ -39,18 +37,18 @@ const Features = () => {
     {
       id: 1,
       imgSrc: feature1,
-      title: 'Corporis temporibus maiores provident',
-      description: 'Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.',
+      title: 'Comprehensive Career Assessments',
+      description: 'Our detailed assessments analyze your skills, interests, and personality traits to provide career suggestions that fit you perfectly.',
     },
     {
       id: 2,
       imgSrc: feature2,
-      title: 'Neque ipsum omnis sapiente quod quia dicta',
-      description: 'Quidem qui dolore incidunt aut. In assumenda harum id iusto lorena plasico mares',
+      title: 'Interactive Counseling Sessions',
+      description: 'Join our live career counseling sessions where experts offer advice and answer your queries.',
       list: [
-        'Et corporis ea eveniet ducimus.',
-        'Exercitationem dolorem sapiente.',
-        'Veniam quia modi magnam.',
+        'Tailored career advice.',
+        'One-on-one counseling options.',
+        'Guided group discussions.',
       ],
     },
   ];
@@ -60,7 +58,7 @@ const Features = () => {
       <section id="features" className="features section">
         <div className="container section-title" data-aos="fade-up">
           <h2>Features</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+          <p>Explore our career counseling tools and resources designed to help you discover your true potential and plan your future career.</p>
         </div>
 
         <div className="container">

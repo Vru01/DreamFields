@@ -63,12 +63,9 @@ exports.getQuiz = async (req, res) => {
 
 exports.submitAnswers = async (req, res) => {
     try {
-        const { answers } = req.body; // Get answers from the request body
-        const latestQuiz = await Quiz.findOne().sort({ createdAt: -1 }); // Get the latest quiz
-
-        if (!latestQuiz) {
-            return res.status(404).json({ message: 'No quizzes found' });
-        }
+        const { answers } = req.body; 
+        const latestQuiz = await Quiz.findOne().sort({ createdAt: -1 });
+        if (!latestQuiz) { return res.status(404).json({ message: 'No quizzes found' });}
 
         const quizId = latestQuiz._id; // Get quizId from the latest quiz
 

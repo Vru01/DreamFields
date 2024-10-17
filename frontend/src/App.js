@@ -8,7 +8,8 @@ import Login from './components/Login.jsx' ;
 import  Signup from './components/Signup.jsx' ;
 
 import Quiz from './components/Quiz/QuizPage.jsx';
-import Temp from './pages/Temp.jsx'
+import Temp from './pages/Dashboard.jsx'
+import Astronomy from './components/Astronomy/Astronomy.jsx'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/signup' element = {<Signup />} />
         <Route path='/quiz' element= {<Quiz />} />
         <Route path='/dashboard' element={<Temp />} />
+        <Route path='/astronomy' element= {<Astronomy />} />
       </Routes>
     </div>
   );
