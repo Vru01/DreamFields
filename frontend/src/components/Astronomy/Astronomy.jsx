@@ -25,9 +25,9 @@ const Astronomy = () => {
       <div className="relative z-10 pointer-events-auto">
         <Header />
         
-        <section className="flex flex-col items-center justify-center text-center p-10">
-          <h2 className="text-5xl font-extrabold duolingo-font mb-4">{astronomyData.title}</h2>
-          <p className="mb-6 text-lg">{astronomyData.definition}</p>
+        <section className="flex flex-col items-center bg-transparent  justify-center text-center p-10">
+          <h2 className="text-5xl font-extrabold duolingo-font mb-4 text-white">{astronomyData.title}</h2>
+          <p className="mb-6 text-lg text-white ">{astronomyData.definition}</p>
         </section>
         <div className='flex justify-evenly'>
           <img src={astronaut} alt="astronaut" height={400} width={400} className='floating'/>
@@ -55,7 +55,7 @@ const Astronomy = () => {
           
         <div className="flex justify-around items-center my-10">
           <FunFacts/>
-          {/* <img src={uranus} alt="Black Hole" height={400} width={200} /> */}
+          <img src={earth} alt="Black Hole" height={400} width={400} className='floating'/>
         </div>
         <Timeline />
         <VideoComponent></VideoComponent>

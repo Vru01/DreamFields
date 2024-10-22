@@ -60,50 +60,33 @@ exports.getQuiz = async (req, res) => {
     }
 };
 
-
 exports.submitAnswers = async (req, res) => {
     try {
         const { answers } = req.body; 
         const latestQuiz = await Quiz.findOne().sort({ createdAt: -1 });
         if (!latestQuiz) { return res.status(404).json({ message: 'No quizzes found' });}
 
-        const quizId = latestQuiz._id; // Get quizId from the latest quiz
+        const quizId = latestQuiz._id; 
 
         // Validate the input
         if (!answers || !quizId ) {
-            return res.status(400).json({ message: 'Answers and quiz fields are required' });
+            return res.status(400).json({ message: 'Answers and quiz both fields are required' });
         }
 
-        // const formattedAnswers = {};
-        // for (let key in answers) {
-        //     // Convert both the key (question number) and value (answer) to strings
-        //     formattedAnswers[String(key)] = String(answers[key]);
-        // }
-        // const answerPayload = {
-        //     answers: answers
-        // };
-        // console.log(answerPayload)
-        // console.log(JSON.stringify(answerPayload, null, 2));
-        // console.log(answerPayload);
-        
-        // Prepare the answer payload for the AI model
         const answerPayload = {
-            question: latestQuiz.questions, // Use questions from the latest quiz
-            // response: answers // Pass user-selected answers
+            question: latestQuiz.questions, 
             answers: answers 
         };
-        console.log(answerPayload) ;
+        console.log( "answerPayload => " , answerPayload) ;
         
-
         // Call the recommendations logic
         const recommendations = await getRecommendations(answerPayload); // Define this function
+
+        console.log("recommendations => " , recommendations) ;
 
         return res.status(200).json({
             message: 'Answers submitted successfully',
             recommendations, // Include recommendations in the response
-            // recommendations: {
-            //     recommended_fields: recommendations.recommended_fields.length > 0 ? recommendations.recommended_fields : [{ field: "Hello" }]
-            // } 
         });
     } catch (err) {
         return res.status(500).json({ message: 'Error submitting answers', error: err.message });
@@ -121,7 +104,6 @@ async function getRecommendations(answerPayload) {
         };
 
         // Send the answer payload to the Python script
-        console.log("python" , JSON.stringify(prompt)) ;
         pyshell.send(JSON.stringify(prompt));
 
         pyshell.on('message', function (message) {

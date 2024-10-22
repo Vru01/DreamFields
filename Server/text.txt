@@ -112,6 +112,7 @@ exports.getRecommendationsByQuizId = async (req, res) => {
 
 
 
+source venv/bin/activate
 
 
 

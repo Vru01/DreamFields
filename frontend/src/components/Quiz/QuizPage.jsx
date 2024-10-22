@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { StarsBackground } from '../Helper/stars-background';
 
 const Quiz = () => {
     const [quizData, setQuizData] = useState([]);
@@ -38,81 +39,96 @@ const Quiz = () => {
             ...prev,
             [questionId]: answer,
         }));
-        console.log("answers" , questionId, " -> " , answer) ;
+        console.log("answers", questionId, " -> ", answer);
     };
 
     // Submit Answers Function
     const submitAnswers = async () => {
         try {
-            console.log("Answers sendind") ;
+            console.log("Answers is in progress") ;
             const response = await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
-            // Expecting recommendations to be in response.data.recommended_fields
-            console.log("Answers sendind2") ;
-            const recommendedFields = response.data.recommendations.recommended_fields || [];
-            console.log("recommendedFields" , recommendedFields) ;
-            setRecommendations(recommendedFields);
-            toast.success('Answers submited successfully!', {
+            const recommendedFields = response.data.recommendations || [];
+            console.log("submit answer => ");
+            console.log("recommendedFields => ", recommendedFields);
+            setRecommendations(Array.isArray(recommendedFields) ? recommendedFields : []);
+            toast.success('Answers submitted successfully!', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
-              });
+            });
         } catch (error) {
             console.error('Error submitting answers:', error);
         }
     };
 
     return (
-        <div className="p-6 max-w-lg mx-auto">
-            <h1 className="text-2xl font-bold mb-4 text-center">Quiz Time!</h1>
-            <button 
-                onClick={startQuiz} 
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mb-4"
-                disabled={loading}
-            >
-                {loading ? 'Starting Quiz...' : 'Start Quiz'}
-            </button>
-            {quizData.length > 0 && (
-                <div className="mb-4">
-                    {quizData.map((question) => (
-                        <div key={question.number} className="border p-4 mb-2 rounded-md shadow-md">
-                            <p className="font-semibold">{question.text}</p>
-                            <div className="flex flex-col">
-                                {Object.entries(question.options).map(([key, value]) => (
-                                    <label key={key} className="flex items-center mt-2">
-                                        <input 
-                                            type="radio" 
-                                            name={`question-${question.number}`} 
-                                            value={key} 
-                                            onChange={() => handleAnswerChange(question.number, key)} 
-                                            className="mr-2"
-                                        />
-                                        {value}
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                    <button 
-                        onClick={submitAnswers} 
-                        className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+        <div className="min-h-screen bg-black flex items-center justify-center">
+            <StarsBackground />
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full z-20">
+                <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Quiz Time!</h1>
+                
+                {/* Start Quiz Button, only show when no recommendations are present */}
+                {!recommendations.length && (
+                    <button
+                        onClick={startQuiz}
+                        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg"
+                        disabled={loading}
                     >
-                        Submit Answers
+                        {loading ? 'Starting Quiz...' : 'Start Quiz'}
                     </button>
-                </div>
-            )}
-            {recommendations.length > 0 && (
-                <div className="mt-4 p-4 border rounded-md shadow-md">
-                    <h2 className="font-bold">Recommended Fields Based on Your Interests:</h2>
-                    <ul>
-                        {recommendations.map((rec, index) => (
-                            <li key={index} className="mt-1">{rec.field}</li> // Adjusting to use rec.field
+                )}
+
+                {/* Show Quiz Questions only if recommendations are not present */}
+                {quizData.length > 0 && !recommendations.length && (
+                    <div className="space-y-6">
+                        {quizData.map((question) => (
+                            <div key={question.number} className="border p-4 rounded-md shadow-md bg-gray-50">
+                                <p className="font-semibold text-lg text-gray-700">{question.text}</p>
+                                <div className="mt-4 space-y-2">
+                                    {Object.entries(question.options).map(([key, value]) => (
+                                        <label key={key} className="flex items-center space-x-2">
+                                            <input
+                                                type="radio"
+                                                name={`question-${question.number}`}
+                                                value={key}
+                                                onChange={() => handleAnswerChange(question.number, key)}
+                                                className="form-radio text-blue-600"
+                                            />
+                                            <span className="text-gray-600">{value}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
                         ))}
-                    </ul>
-                </div>
-            )}
+                        <button
+                            onClick={submitAnswers}
+                            className="w-full bg-green-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-green-700 shadow-lg"
+                        >
+                            Submit Answers
+                        </button>
+                    </div>
+                )}
+
+                {/* Show Recommendations once they are available */}
+                {Array.isArray(recommendations) && recommendations.length > 0 && (
+                    <div className="mt-8 p-6 bg-gray-100 rounded-md shadow-md">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-4">Recommended Fields Based on Your Interests:</h2>
+                        <ul className="space-y-2">
+                            {recommendations.map((rec, index) => (
+                                <li key={index} className="text-gray-700 font-medium bg-white p-3 rounded-md shadow-sm">
+                                    {rec.field}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
+
+            {/* Toast notifications container */}
+            <ToastContainer />
         </div>
     );
 };

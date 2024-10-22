@@ -92,10 +92,16 @@ const Dashboard = () => {
               <i className='bx bx-message-square-dots mr-2'></i>
               <a href="#">Messages</a>
             </li>
-            <li className="p-4 flex items-center hover:bg-gray-800 transition duration-200">
+            {/* <li className="p-4 flex items-center hover:bg-gray-800 transition duration-200">
               <i className='bx bx-cog mr-2'></i>
               <a href="#">Know Your Interest</a>
-            </li>
+            </li> */}
+            <Link
+            className="p-4 flex items-center hover:bg-gray-800 transition duration-200"
+            to={"/quiz"}
+            >
+              Know Your Interest
+            </Link>
           </ul>
         </nav>
 
