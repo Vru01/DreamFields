@@ -65,15 +65,11 @@ exports.submitAnswers = async (req, res) => {
     try {
         const { answers } = req.body; 
         const latestQuiz = await Quiz.findOne().sort({ createdAt: -1 });
-        
         if (!latestQuiz) {  return res.status(404).json({ message: 'No quizzes found' });   }
         const quizId = latestQuiz._id; 
-
-        // Validate the input
         if (!answers || !quizId) {
             return res.status(400).json({ message: 'Answers and quiz both fields are required' });
         }
-
         const answerPayload = {
             question: latestQuiz.questions, 
             answers: answers 
@@ -83,19 +79,18 @@ exports.submitAnswers = async (req, res) => {
         const jsonString = await getRecommendations(answerPayload); 
         console.log("1" , jsonString) ;
         const recommendations = JSON.parse(jsonString);
-        console.log(recommendations.recommended_fields) ;
 
         // Store the recommendations in the database
         const recommendation = new Recommendation({
             quizId: quizId,
-            recommendedFields: recommendations.recommended_fields // This is an array of objects from the recommendations
+            recommendedFields: recommendations.recommended_fields 
         });
         console.log( "2" ,recommendation) ;
         await recommendation.save(); // Save the recommendations to the database
 
         return res.status(200).json({
             message: 'Answers submitted successfully and recommendations stored',
-            recommendations: recommendations // Return the array of recommended fields
+            recommendations: recommendations 
         });
     } catch (err) {
         return res.status(500).json({ message: 'Error submitting answers', error: err.message });
@@ -131,3 +126,17 @@ async function getRecommendations(answerPayload) {
 }
 
 
+exports.getLatestRecommendation = async (req, res) => {
+    try {
+        const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 });
+        if (!latestRecommendation) {
+            return res.status(404).json({ message: 'No recommendations found' });
+        }
+        return res.status(200).json({
+            message: 'Latest recommendation retrieved successfully',
+            recommendation: latestRecommendation
+        });
+    } catch (err) {
+        return res.status(500).json({ message: 'Error retrieving recommendation', error: err.message });
+    }
+};

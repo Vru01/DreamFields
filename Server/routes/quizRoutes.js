@@ -1,6 +1,6 @@
 // routes/quizRoutes.js
 const express = require('express');
-const { startQuiz,  getQuiz , submitAnswers } = require('../controllers/quizController');
+const { startQuiz,  getQuiz , submitAnswers , getLatestRecommendation } = require('../controllers/quizController');
 
 const router = express.Router();
 
@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/startQuiz', startQuiz) ;
 router.get('/getQuiz' , getQuiz) ;
 router.post('/submitAnswers', submitAnswers ) ;
+router.get('/getLatestRecommendation' , getLatestRecommendation ) ;
 // router.get('/api/v1/recommendations/:quizId', getRecommendationsByQuizId);
 
 // Route to process quiz answers and get recommendations

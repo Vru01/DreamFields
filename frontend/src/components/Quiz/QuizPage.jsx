@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,11 +11,6 @@ const Quiz = () => {
     const [loading, setLoading] = useState(false);
 
     // Effect to log recommendations when updated
-    useEffect(() => {
-        if (recommendations.length > 0) {
-            console.log("Updated recommendations => ", recommendations);
-        }
-    }, [recommendations]);
 
     // Start Quiz Function
     const startQuiz = async () => {
@@ -49,19 +44,24 @@ const Quiz = () => {
         console.log("answers", questionId, " -> ", answer);
     };
 
-    // Submit Answers Function
     const submitAnswers = async () => {
         try {
             console.log("Answers in progress");
-            const response = await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
-            const recommendedFields = response.data.recommendations || [];
+    
+            // Submit answers to the backend
+            await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
             console.log("submit answer => ");
-            console.log("recommendedFields => ", recommendedFields);
-
+    
+            // Once answers are submitted, fetch the latest recommendations from the database
+            const recommendationResponse = await axios.get('http://localhost:5000/api/v1/quiz/getLatestRecommendation');
+            const recommendedFields = recommendationResponse.data.recommendation.recommendedFields || [];
+            console.log("recommendedFields from DB => ", recommendedFields);
+    
             // Set recommendations state
             setRecommendations(recommendedFields);
-
-            toast.success('Answers submitted successfully!', {
+    
+            // Show success message
+            toast.success('Answers submitted successfully and recommendations fetched!', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -70,9 +70,18 @@ const Quiz = () => {
                 draggable: true,
             });
         } catch (error) {
-            console.error('Error submitting answers:', error);
+            console.error('Error submitting answers or fetching recommendation:', error);
+            toast.error('An error occurred. Please try again.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
     };
+    
 
     return (
         <div className="min-h-screen bg-black flex items-center justify-center">
