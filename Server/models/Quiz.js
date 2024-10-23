@@ -18,10 +18,13 @@ const quizSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+
 const recommendationSchema = new mongoose.Schema({
-  quizId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Quiz' },
-  recommendedFields: [{ field: String }]
+  quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz', required: true },
+  recommendedFields: [{ field: String }] // Ensure it's an array of objects
 });
+
+
 
 // Exporting both models
 const Quiz = mongoose.model('Quiz', quizSchema);

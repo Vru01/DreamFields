@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,12 +10,19 @@ const Quiz = () => {
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    // Effect to log recommendations when updated
+    useEffect(() => {
+        if (recommendations.length > 0) {
+            console.log("Updated recommendations => ", recommendations);
+        }
+    }, [recommendations]);
+
     // Start Quiz Function
     const startQuiz = async () => {
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/v1/quiz/startQuiz'); // Start quiz API call
-            fetchQuiz(); // Immediately fetch quiz questions after starting
+            await axios.post('http://localhost:5000/api/v1/quiz/startQuiz');
+            fetchQuiz();
         } catch (error) {
             console.error('Error starting the quiz:', error);
         } finally {
@@ -45,12 +52,15 @@ const Quiz = () => {
     // Submit Answers Function
     const submitAnswers = async () => {
         try {
-            console.log("Answers is in progress") ;
+            console.log("Answers in progress");
             const response = await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
             const recommendedFields = response.data.recommendations || [];
             console.log("submit answer => ");
             console.log("recommendedFields => ", recommendedFields);
-            setRecommendations(Array.isArray(recommendedFields) ? recommendedFields : []);
+
+            // Set recommendations state
+            setRecommendations(recommendedFields);
+
             toast.success('Answers submitted successfully!', {
                 position: "top-right",
                 autoClose: 3000,
@@ -74,7 +84,8 @@ const Quiz = () => {
                 {!recommendations.length && (
                     <button
                         onClick={startQuiz}
-                        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg"
+                        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition 
+                        duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg"
                         disabled={loading}
                     >
                         {loading ? 'Starting Quiz...' : 'Start Quiz'}
