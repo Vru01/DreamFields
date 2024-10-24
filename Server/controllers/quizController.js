@@ -6,7 +6,7 @@ const { PythonShell } = require('python-shell');
 exports.startQuiz = async (req, res) => {
     try {
         // Hardcoded prompt to generate quiz questions
-        const prompt = "(Give me 5 questions)Play a quiz with me. I want to conduct a quiz to determine the user's interest. Ask 5 questions one by one in the following format without any extra comments: Question format: Question [number]: [Question text]? A) Option A B) Option B C) Option C D) Option D E) Option E After the last question, provide a list of recommended activities based on the user's interests, structured neatly like this: Recommended Activities Based on Your Interests: 1. [Category Name]: - [Activity 1] - [Activity 2] - [Activity 3] Not more than 2. Please avoid any unnecessary comments. Play in json format so it will be easier for me to add in my backend. For example: {\"question\": [{\"number\": 1,\"text\": \"What do you enjoy doing in your free time?\",\"options\": {\"A\": \"Reading books and articles\",\"B\": \"Watching movies and TV shows\",\"C\": \"Playing sports and outdoor games\",\"D\": \"Traveling and exploring new places\",\"E\": \"Creating art and music\"}}]}";
+        const prompt = "(Give me 10 questions)Play a quiz with me. I want to conduct a quiz to determine the user's interest. Ask 10 questions one by one in the following format without any extra comments: Question format: Question [number]: [Question text]? A) Option A B) Option B C) Option C D) Option D E) Option E After the last question, provide a list of recommended activities based on the user's interests, structured neatly like this: Recommended Activities Based on Your Interests: 1. [Category Name]: - [Activity 1] - [Activity 2] - [Activity 3] Not more than 2. Please avoid any unnecessary comments. Play in json format so it will be easier for me to add in my backend. For example: {\"question\": [{\"number\": 1,\"text\": \"What do you enjoy doing in your free time?\",\"options\": {\"A\": \"Reading books and articles\",\"B\": \"Watching movies and TV shows\",\"C\": \"Playing sports and outdoor games\",\"D\": \"Traveling and exploring new places\",\"E\": \"Creating art and music\"}}]}";
 
         // Initialize PythonShell to run the Python script
         let pyshell = new PythonShell('./main.py');
@@ -77,7 +77,6 @@ exports.submitAnswers = async (req, res) => {
         
         // Call the recommendations logic
         const jsonString = await getRecommendations(answerPayload); 
-        console.log("1" , jsonString) ;
         const recommendations = JSON.parse(jsonString);
 
         // Store the recommendations in the database
