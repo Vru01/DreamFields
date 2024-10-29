@@ -42,6 +42,7 @@ exports.startQuiz = async (req, res) => {
     }
 };
 
+
 exports.getQuiz = async (req, res) => {
     try {
         // Find the latest quiz in the database
