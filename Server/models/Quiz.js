@@ -22,7 +22,7 @@ const quizSchema = new mongoose.Schema({
 const recommendationSchema = new mongoose.Schema({
   quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz', required: true },
   recommendedFields: [{ field: String }] // Ensure it's an array of objects
-});
+}, { timestamps: true });
 
 
 

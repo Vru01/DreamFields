@@ -128,7 +128,8 @@ async function getRecommendations(answerPayload) {
 
 exports.getLatestRecommendation = async (req, res) => {
     try {
-        const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 });
+        // const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 });
+        const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 }).limit(1);
         if (!latestRecommendation) {
             return res.status(404).json({ message: 'No recommendations found' });
         }
