@@ -19,11 +19,22 @@ const quizSchema = new mongoose.Schema({
 });
 
 
+// const recommendationSchema = new mongoose.Schema({
+//   quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz', required: true },
+//   recommendedFields: [{ field: String }] // Ensure it's an array of objects
+// }, { timestamps: true });
+
+
 const recommendationSchema = new mongoose.Schema({
   quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz', required: true },
-  recommendedFields: [{ field: String }] // Ensure it's an array of objects
+  recommendedFields: [
+    { 
+      field: { type: String, required: true },
+      percent_interest: { type: Number, required: true }, // Interest level in the field
+      description: { type: String, required: true } // Brief description of the field
+    }
+  ]
 }, { timestamps: true });
-
 
 
 // Exporting both models
