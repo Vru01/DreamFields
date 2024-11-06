@@ -6,9 +6,9 @@ const { PythonShell } = require('python-shell');
 exports.startQuiz = async (req, res) => {
     try {
         // Hardcoded prompt to generate quiz questions
-        // const prompt = "(Give me 10 questions)Play a quiz with me. I want to conduct a quiz to determine the user's interest. Ask 10 questions one by one in the following format without any extra comments: Question format: Question [number]: [Question text]? A) Option A B) Option B C) Option C D) Option D E) Option E After the last question, provide a list of recommended activities based on the user's interests, structured neatly like this: Recommended Activities Based on Your Interests: 1. [Category Name]: - [Activity 1] - [Activity 2] - [Activity 3] Not more than 2. Please avoid any unnecessary comments. Play in json format so it will be easier for me to add in my backend. For example: {\"question\": [{\"number\": 1,\"text\": \"What do you enjoy doing in your free time?\",\"options\": {\"A\": \"Reading books and articles\",\"B\": \"Watching movies and TV shows\",\"C\": \"Playing sports and outdoor games\",\"D\": \"Traveling and exploring new places\",\"E\": \"Creating art and music\"}}]}";
-        const prompt = "Conduct a 10-question quiz to determine the user's interests. Ask each question one by one in this JSON format, without any extra comments: {\"question\": [{\"number\": 1, \"text\": \"Question text here?\", \"options\": {\"A\": \"Option A text\", \"B\": \"Option B text\", \"C\": \"Option C text\", \"D\": \"Option D text\", \"E\": \"Option E text\"}}]}. After the last question, provide 2-4 recommended fields, each with a single percentage value indicating the user's interest level in that field. Use this structured format: {\"recommended_fields\": [{\"field\": \"Data Analyst\", \"percent_interest\": 75}, {\"field\": \"Engineer\", \"percent_interest\": 35}]}. Avoid any additional comments."
-
+        const prompt = "(Give me 10 questions)Play a quiz with me. I want to conduct a quiz to determine the user's interest. Ask 10 questions one by one in the following format without any extra comments: Question format: Question [number]: [Question text]? A) Option A B) Option B C) Option C D) Option D E) Option E After the last question, provide a list of recommended activities based on the user's interests, structured neatly like this: Recommended Activities Based on Your Interests: 1. [Category Name]: - [Activity 1] - [Activity 2] - [Activity 3] Not more than 2. Please avoid any unnecessary comments. Play in json format so it will be easier for me to add in my backend. For example: {\"question\": [{\"number\": 1,\"text\": \"What do you enjoy doing in your free time?\",\"options\": {\"A\": \"Reading books and articles\",\"B\": \"Watching movies and TV shows\",\"C\": \"Playing sports and outdoor games\",\"D\": \"Traveling and exploring new places\",\"E\": \"Creating art and music\"}}]}";
+        // const prompt = "Guve me 10-questions to determine the user's interests. Ask 10 questions one by one in this JSON format, without any extra comments: {\"question\": [{\"number\": 1, \"text\": \"Question text here?\", \"options\": {\"A\": \"Option A text\", \"B\": \"Option B text\", \"C\": \"Option C text\", \"D\": \"Option D text\", \"E\": \"Option E text\"}}]}.(Give me 10 questions)Play a quiz with me. I want to conduct a quiz to determine the user's interest. Ask 10 questions one by one in the following format without any extra comments: Question format: Question [number]: [Question text]? A) Option A B) Option B C) Option C D) Option D E) Option E After the last question, provide a list of recommended activities based on the user's interests, structured neatly like this: Recommended Activities Based on Your Interests: 1. [Category Name]: - [Activity 1] - [Activity 2] - [Activity 3] Not more than 2. Please avoid any unnecessary comments. Play in json format so it will be easier for me to add in my backend. each with a single percentage value indicating the user's interest level in that field. Use this structured format: {\"recommended_fields\": [{\"field\": \"Data Analyst\", \"percent_interest\": 75}, {\"field\": \"Engineer\", \"percent_interest\": 35}]}. Avoid any additional comments."
+        // const prompt = ''
         // Initialize PythonShell to run the Python script
         let pyshell = new PythonShell('./main.py');
         // Send the prompt to the Python script
@@ -104,9 +104,14 @@ async function getRecommendations(answerPayload) {
     return new Promise((resolve, reject) => {
         let pyshell = new PythonShell('./main.py');
         // Construct the prompt based on the input structure you provided
-        const prompt = {
-            answer: `(Give me recommendations based on this quiz) {\"question\": ${JSON.stringify(answerPayload.question)}, \"answers\": ${JSON.stringify(answerPayload.answers)}}. Based on this, recommend fields of interest for me in a structured JSON format. Do not give any traits just array of objects named as recommended_fields inside of it the field. No description required keep this names same always. Give me the overall recommendation based on the quiz do not go question wise recommendation field.`
-        };
+            // const prompt = {
+            //     answer: `(Give me recommendations based on this quiz) {\"question\": ${JSON.stringify(answerPayload.question)}, \"answers\": ${JSON.stringify(answerPayload.answers)}}. Based on this, recommend fields of interest for me in a structured JSON format. Do not give any traits just array of objects named as recommended_fields inside of it the field. No description required keep this names same always. Give me the overall recommendation based on the quiz do not go question wise recommendation field.`
+            // };
+            
+            const prompt = {
+                answer: `(Give me recommendations based on this quiz) {\"question\": ${JSON.stringify(answerPayload.question)}, \"answers\": ${JSON.stringify(answerPayload.answers)}}. Based on this, recommend fields of interest for me in a structured JSON format. Provide an array named 'recommended_fields' containing objects with 'field', 'percent_interest', and 'description' for each recommended area. Each object should be structured as follows: {\"field\": \"Field Name\", \"percent_interest\": InterestValue, \"description\": \"Brief description\"}. Provide an overall recommendation based on the quiz, not question-by-question. Avoid extra comments.`
+            };
+            
         // Send the answer payload to the Python script
         pyshell.send(JSON.stringify(prompt));
         pyshell.on('message', function (message) {
@@ -129,7 +134,8 @@ async function getRecommendations(answerPayload) {
 
 exports.getLatestRecommendation = async (req, res) => {
     try {
-        const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 });
+        // const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 });
+        const latestRecommendation = await Recommendation.findOne().sort({ createdAt: -1 }).limit(1);
         if (!latestRecommendation) {
             return res.status(404).json({ message: 'No recommendations found' });
         }
