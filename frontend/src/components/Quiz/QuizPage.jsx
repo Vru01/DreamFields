@@ -10,8 +10,6 @@ const Quiz = () => {
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // Effect to log recommendations when updated
-
     // Start Quiz Function
     const startQuiz = async () => {
         setLoading(true);
@@ -81,7 +79,6 @@ const Quiz = () => {
             });
         }
     };
-    
 
     return (
         <div className="min-h-screen bg-black flex items-center justify-center">
@@ -136,10 +133,12 @@ const Quiz = () => {
                 {Array.isArray(recommendations) && recommendations.length > 0 && (
                     <div className="mt-8 p-6 bg-gray-100 rounded-md shadow-md">
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">Recommended Fields Based on Your Interests:</h2>
-                        <ul className="space-y-2">
+                        <ul className="space-y-4">
                             {recommendations.map((rec, index) => (
-                                <li key={index} className="text-gray-700 font-medium bg-white p-3 rounded-md shadow-sm">
-                                    {rec.field}
+                                <li key={index} className="bg-white p-4 rounded-md shadow-sm">
+                                    <h3 className="text-lg font-medium text-gray-700">{rec.field}</h3>
+                                    <p className="text-sm text-gray-600">Interest Level: {rec.percent_interest}%</p>
+                                    <p className="text-gray-500 mt-1">{rec.description}</p>
                                 </li>
                             ))}
                         </ul>
