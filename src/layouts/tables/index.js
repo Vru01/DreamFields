@@ -30,6 +30,7 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
+import Courses from "./Courses";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
@@ -38,7 +39,7 @@ function Tables() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
+      {/* <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
@@ -95,7 +96,8 @@ function Tables() {
             </Card>
           </Grid>
         </Grid>
-      </MDBox>
+      </MDBox> */}
+      <Courses />
       <Footer />
     </DashboardLayout>
   );

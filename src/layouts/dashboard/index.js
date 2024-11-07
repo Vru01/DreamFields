@@ -118,7 +118,7 @@ function Dashboard() {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
-                <ReportsLineChart
+                {/* <ReportsLineChart
                   color="success"
                   title="daily sales"
                   description={
@@ -128,18 +128,18 @@ function Dashboard() {
                   }
                   date="updated 4 min ago"
                   chart={sales}
-                />
+                /> */}
               </MDBox>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
-                <ReportsLineChart
+                {/* <ReportsLineChart
                   color="dark"
                   title="completed tasks"
                   description="Last Campaign Performance"
                   date="just updated"
                   chart={tasks}
-                />
+                /> */}
               </MDBox>
             </Grid>
           </Grid>
@@ -150,7 +150,7 @@ function Dashboard() {
               <Projects />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
+              {/* <OrdersOverview /> */}
             </Grid>
           </Grid>
         </MDBox>
