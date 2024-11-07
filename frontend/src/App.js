@@ -9,7 +9,7 @@ import  Signup from './components/Signup.jsx' ;
 import Quiz from './components/Quiz/QuizPage.jsx';
 import Temp from './pages/Dashboard.jsx'
 import Astronomy from './components/Astronomy/Astronomy.jsx'
-
+import Loader from './components/Loaders/Loader1.jsx';
 
 function App() {
   return (
@@ -21,6 +21,9 @@ function App() {
         <Route path='/quiz' element= {<Quiz />} />
         <Route path='/dashboard' element={<Temp />} />
         <Route path='/astronomy' element= {<Astronomy />} />
+
+
+        <Route path='/loader' element= {<Loader />} />
 
       </Routes>
     </div>
