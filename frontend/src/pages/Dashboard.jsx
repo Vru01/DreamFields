@@ -93,12 +93,12 @@ const Dashboard = () => {
     </div>
 
     {/* Custom Cards Section */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
       {fields.map((field, index) => (
         <div key={index} className="bg-white hover:border-blue-300 border-2 border-b-4 border-blue-100 hover:scale-105 transition-all duration-150 relative p-4 pb-2 rounded-lg shadow-md">
           <div className="flex">
             <div className="flex-grow">
-              <h5 className="font-bold text-2xl duolingo-font mb-2 text-blue-600">{field.title}</h5>
+              <h5 className="text-2xl Arial-font mb-2 text-blue-600">{field.title}</h5>
               <h6 className="text-blue-400 text-lg font-semibold nunito-font">{field.phrase}</h6>
               <p className="text-gray-600">{field.description}</p>
             </div>

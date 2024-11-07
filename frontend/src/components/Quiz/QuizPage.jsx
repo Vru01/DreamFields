@@ -177,7 +177,7 @@ const Quiz = () => {
                 {/* Recommendations */}
                 {Array.isArray(recommendations) && recommendations.length > 0 && (
                     <div className="mt-8 p-6 bg-gray-100 rounded-md shadow-md">
-                        <h2 className="text-xl font-semibold text-gray-800 mb-4">Recommended Fields Based on Your Interests:</h2>
+                        <h2 className="text-2xl  text-center font-bold text-purple-900 mb-4">Recommended Fields Based on Your Interests:</h2>
                         <ul className="space-y-4">
                             {recommendations.map((rec, index) => (
                                 <li key={index} className="bg-white p-4 rounded-md shadow-sm">
