@@ -10,6 +10,7 @@ import Quiz from './components/Quiz/QuizPage.jsx';
 import Temp from './pages/Dashboard.jsx'
 import Astronomy from './components/Astronomy/Astronomy.jsx'
 import Loader from './components/Loaders/Loader1.jsx';
+import Quiz2 from './components/Quiz/quiz.jsx';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
 
 
         <Route path='/loader' element= {<Loader />} />
+        <Route path='/demo' element= {<Quiz2 />} />
 
       </Routes>
     </div>

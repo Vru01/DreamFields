@@ -6,10 +6,6 @@ import { StarsBackground } from '../Helper/stars-background';
 import BTN from '../Common/CButton';
 import Loader from '../Loaders/Loader1';
 
-import img1 from '../../assets/img2.png';  // Image for the start phase
-import img2 from '../../assets/img2.png';  // Image for loading phase
-
-
 const Quiz = () => {
     const [quizData, setQuizData] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -94,7 +90,7 @@ const Quiz = () => {
     const handleNextQuestion = () => {
         if (currentQuestionIndex < quizData.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedOption(null);
+            setSelectedOption(null); 
         } else {
             submitAnswers();
         }
@@ -110,115 +106,92 @@ const Quiz = () => {
     };
 
     return (
-        <div className="overflow-hidden min-h-screen flex flex-col items-center justify-center relative">
-
+        <div className="min-h-screen bg-purple-300 flex flex-col items-center justify-center">
             <StarsBackground />
-
-            {/* Start Quiz Section with img1 */}
+            
+            {/* Start Quiz Section */}
             {!quizStarted && recommendations.length === 0 && (
-                <div className="absolute inset-0 bg-cover bg-center z-20" 
-                    style={{ 
-                        backgroundImage: `url(${img1})`, 
-                        height: '100vh', 
-                        width: '100vw',
-                        opacity: '100%'
-                    }}
-                >
-                    <div className="translate-y-2/4 h-full w-full ">
-                        <div className="max-w-xl w-full mx-auto z-20">
-                        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Quiz Time!</h1>
-                            <button
-                                onClick={startQuiz}
-                                className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md 
-                                transition duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg transform hover:scale-105"
-                                disabled={loading}
-                            >
-                                {loading ? 'The quiz will start soon...' : 'Start Quiz'}
-                            </button>
+                <div className="bg-white mb-0 px-8 pt-8 rounded-lg shadow-lg max-w-4xl w-full z-20">
+                    <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Quiz Time!</h1>
+                    <button
+                        onClick={startQuiz}
+                        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition 
+                        duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg"
+                        disabled={loading}
+                    >
+                        {loading 
+                        ? 'The quiz will start soon...'
+                        : 'Start Quiz'}
+                    </button>
+                </div>
+            )}
+            {loading && <Loader />}
+            
+            {/* Questions Section */}
+            {quizStarted && quizData.length > 0 && recommendations.length === 0 && (
+                <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full z-20 space-y-6">
+                    <div key={quizData[currentQuestionIndex].number} className="border p-4 rounded-xl shadow-lg bg-white">
+                        <p className="text-2xl font-bold mb-4">
+                            <span className="font-bold text-5xl text-purple-400">
+                                {quizData[currentQuestionIndex].number < 10 
+                                    ? `0${quizData[currentQuestionIndex].number}` 
+                                    : quizData[currentQuestionIndex].number}
+                            </span>
+                            /{quizData.length}
+                        </p>
+                        <p className="font-bold text-3xl text-gray-700 mb-6">
+                            {quizData[currentQuestionIndex].text}
+                        </p>
+                        <div className="space-y-4">
+                            {Object.entries(quizData[currentQuestionIndex].options).map(([key, value]) => (
+                                <div
+                                    key={key}
+                                    onClick={() => handleOptionClick(key)}
+                                    className={`flex items-center space-x-4 p-3 rounded-xl cursor-pointer border-2
+                                        ${selectedOption === key ? "border-blue-500 bg-blue-500" : "border-gray-300"}
+                                        hover:border-blue-400 hover:bg-blue-50 transition duration-200 ease-in-out shadow-sm`}
+                                >
+                                    <span className="font-bold text-xl text-purple-500 bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                                        {key.toUpperCase()}
+                                    </span>
+                                    <span className="text-gray-700 font-semibold">{value}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Overlay and Loader */}
-                    {loading && (
-                        <div className="absolute inset-0  bg-opacity-100 flex flex-col items-center justify-center z-30 backdrop-blur-sm">
-                            <Loader />
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {loading && <Loader />}
-
-            {/* Questions Section with img2 */}
-            {quizStarted && quizData.length > 0 && recommendations.length === 0 && (
-                <div className="absolute inset-0 bg-cover bg-center z-20" style={{ 
-                    backgroundImage: `url(${img2})`, 
-                    height: '100vh', 
-                    width: '100vw' 
-                }}>
-                    <div className="bg-transparent translate-y-20 bg-opacity-70 p-8 rounded-lg shadow-lg max-w-4xl w-full mx-auto space-y-6">
-                        <div key={quizData[currentQuestionIndex].number} className="border p-4 rounded-xl shadow-lg bg-white">
-                            <p className="text-2xl font-bold mb-4">
-                                <span className="font-bold text-5xl text-purple-400">
-                                    {quizData[currentQuestionIndex].number < 10 ? `0${quizData[currentQuestionIndex].number}` : quizData[currentQuestionIndex].number}
-                                </span>
-                                /{quizData.length}
-                            </p>
-                            <p className="font-bold text-3xl text-gray-700 mb-6">{quizData[currentQuestionIndex].text}</p>
-                            <div className="space-y-4">
-                                {Object.entries(quizData[currentQuestionIndex].options).map(([key, value]) => (
-                                    <div
-                                        key={key}
-                                        onClick={() => handleOptionClick(key)}
-                                        className={`flex items-center space-x-4 p-3 rounded-xl cursor-pointer border-2
-                                            ${selectedOption === key ? "border-blue-500 bg-blue-500" : "border-gray-300"}
-                                            hover:border-blue-400 hover:bg-blue-50 transition duration-200 ease-in-out shadow-sm`}
-                                    >
-                                        <span className="font-bold text-xl text-purple-500 bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
-                                            {key.toUpperCase()}
-                                        </span>
-                                        <span className="text-gray-700 font-semibold">{value}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            {currentQuestionIndex > 0 && (
-                                <button
-                                    onClick={handlePreviousQuestion}
-                                    className="w-1/2 bg-purple-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-purple-800 shadow-lg"
-                                >
-                                    Previous
-                                </button>
-                            )}
+                    <div className="flex space-x-4">
+                        {currentQuestionIndex > 0 && (
                             <button
-                                onClick={handleNextQuestion}
+                                onClick={handlePreviousQuestion}
                                 className="w-1/2 bg-purple-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-purple-800 shadow-lg"
                             >
-                                {currentQuestionIndex < quizData.length - 1 ? 'Next' : 'Submit'}
+                                Previous
                             </button>
-                        </div>
+                        )}
+                        <button
+                            onClick={handleNextQuestion}
+                            className="w-1/2 bg-purple-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-purple-800 shadow-lg"
+                        >
+                            {currentQuestionIndex < quizData.length - 1 ? 'Next' : 'Submit'}
+                        </button>
                     </div>
                 </div>
             )}
-
-            {/* Recommendations Section with img3 */}
+            
+            {/* Recommendations Section */}
             {Array.isArray(recommendations) && recommendations.length > 0 && (
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-[70%] w-full z-20 mt-8 scale-110"
-                style={{backgroundImage: `url(${img2})`, 
-                height: '100vh', 
-                width: '100vw' }}
-                >
+                <div className="bg-white p-8 rounded-lg shadow-lg max-w-[70%] w-full z-20 mt-8 scale-110">
                     <h2 className="text-4xl text-center font-bold text-purple-900 mb-14">
                         Recommended Fields Based on Your Interests
                     </h2>
-                    <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 max-w-7xl ">
+                    <div className="grid gap-6 sm:grid-cols-3 max-w-7xl ">
                         {recommendations.map((rec, index) => (
                         <div
                         key={index}
                         className="
                         relative bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-lg shadow-2xl transform hover:scale-105 
-                        transition-transform duration-300 ease-in-out hover:shadow-xl min-h-fit "
+                        transition-transform duration-300 ease-in-out hover:shadow-xl max-h-fit "
                         >
                             <h3 className="text-xl font-bold text-gray-800 mb-2">
                                 {rec.field}
