@@ -6,9 +6,18 @@ import { StarsBackground } from '../Helper/stars-background';
 
 const Quiz = () => {
     const [quizData, setQuizData] = useState([]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [quizStarted, setQuizStarted] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    // Handler to update selection
+    const handleOptionClick = (optionKey) => {
+        setSelectedOption(optionKey);
+        handleAnswerChange(quizData[currentQuestionIndex].number, optionKey);
+    };
 
     // Start Quiz Function
     const startQuiz = async () => {
@@ -18,7 +27,6 @@ const Quiz = () => {
             fetchQuiz();
         } catch (error) {
             console.error('Error starting the quiz:', error);
-        } finally {
             setLoading(false);
         }
     };
@@ -28,8 +36,11 @@ const Quiz = () => {
         try {
             const response = await axios.get('http://localhost:5000/api/v1/quiz/getQuiz');
             setQuizData(response.data.quiz.questions);
+            setQuizStarted(true);
         } catch (error) {
             console.error('Error fetching quiz:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -39,26 +50,16 @@ const Quiz = () => {
             ...prev,
             [questionId]: answer,
         }));
-        console.log("answers", questionId, " -> ", answer);
+        console.log([questionId] + "=>" + answer) ;
     };
 
+    // Submit Answers Function
     const submitAnswers = async () => {
+        setLoading(true);
         try {
-            console.log("Answers in progress");
-    
-            // Submit answers to the backend
             await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
-            console.log("submit answer => ");
-    
-            // Once answers are submitted, fetch the latest recommendations from the database
             const recommendationResponse = await axios.get('http://localhost:5000/api/v1/quiz/getLatestRecommendation');
-            const recommendedFields = recommendationResponse.data.recommendation.recommendedFields || [];
-            console.log("recommendedFields from DB => ", recommendedFields);
-    
-            // Set recommendations state
-            setRecommendations(recommendedFields);
-    
-            // Show success message
+            setRecommendations(recommendationResponse.data.recommendation.recommendedFields || []);
             toast.success('Answers submitted successfully and recommendations fetched!', {
                 position: "top-right",
                 autoClose: 3000,
@@ -77,59 +78,103 @@ const Quiz = () => {
                 pauseOnHover: true,
                 draggable: true,
             });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Handle Next Button Click
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex < quizData.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setSelectedOption(null); // Clear selected option for the next question
+        } else {
+            submitAnswers();
+        }
+    };
+
+    // Handle Previous Button Click
+    const handlePreviousQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+            const prevQuestionNumber = quizData[currentQuestionIndex - 1].number;
+            setSelectedOption(selectedAnswers[prevQuestionNumber] || null); // Restore selected option for previous question
         }
     };
 
     return (
         <div className="min-h-screen bg-black flex items-center justify-center">
             <StarsBackground />
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full z-20">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full z-20">
                 <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Quiz Time!</h1>
                 
-                {/* Start Quiz Button, only show when no recommendations are present */}
-                {!recommendations.length && (
-                    <button
-                        onClick={startQuiz}
-                        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition 
-                        duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg"
-                        disabled={loading}
-                    >
-                        {loading ? 'Starting Quiz...' : 'Start Quiz'}
-                    </button>
-                )}
-
-                {/* Show Quiz Questions only if recommendations are not present */}
-                {quizData.length > 0 && !recommendations.length && (
-                    <div className="space-y-6">
-                        {quizData.map((question) => (
-                            <div key={question.number} className="border p-4 rounded-md shadow-md bg-gray-50">
-                                <p className="font-semibold text-lg text-gray-700">{question.text}</p>
-                                <div className="mt-4 space-y-2">
-                                    {Object.entries(question.options).map(([key, value]) => (
-                                        <label key={key} className="flex items-center space-x-2">
-                                            <input
-                                                type="radio"
-                                                name={`question-${question.number}`}
-                                                value={key}
-                                                onChange={() => handleAnswerChange(question.number, key)}
-                                                className="form-radio text-blue-600"
-                                            />
-                                            <span className="text-gray-600">{value}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
+                {/* Start Quiz Button and Loading Message */}
+                {!quizStarted && (
+                    <div>
                         <button
-                            onClick={submitAnswers}
-                            className="w-full bg-green-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-green-700 shadow-lg"
+                            onClick={startQuiz}
+                            className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition 
+                            duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg"
+                            disabled={loading}
                         >
-                            Submit Answers
+                            {loading ? 'Quiz will start soon...' : 'Start Quiz'}
                         </button>
                     </div>
                 )}
 
-                {/* Show Recommendations once they are available */}
+                {/* Quiz Content */}
+                {quizStarted && quizData.length > 0 && !recommendations.length && (
+                    <div className="space-y-6">
+                        <div key={quizData[currentQuestionIndex].number} className="border p-4 rounded-xl shadow-lg bg-white">
+                            <p className="text-2xl font-bold mb-4">
+                                <span className="font-bold text-5xl text-purple-400">
+                                    {quizData[currentQuestionIndex].number < 10 
+                                        ? `0${quizData[currentQuestionIndex].number}` 
+                                        : quizData[currentQuestionIndex].number}
+                                </span>
+                                /{quizData.length}
+                            </p>
+                            <p className="font-bold text-3xl text-gray-700 mb-6">
+                                {quizData[currentQuestionIndex].text}
+                            </p>
+                            <div className="space-y-4">
+                                {Object.entries(quizData[currentQuestionIndex].options).map(([key, value]) => (
+                                    <div
+                                        key={key}
+                                        onClick={() => handleOptionClick(key)}
+                                        className={`flex items-center space-x-4 p-3 rounded-xl cursor-pointer border-2
+                                            ${selectedOption === key ? "border-blue-500 bg-blue-500" : "border-gray-300"}
+                                            hover:border-blue-400 hover:bg-blue-50 transition duration-200 ease-in-out shadow-sm`}
+                                    >
+                                        <span className="font-bold text-xl text-purple-500 bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                                            {key.toUpperCase()}
+                                        </span>
+                                        <span className="text-gray-700 font-semibold">{value}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex space-x-4">
+                            {currentQuestionIndex > 0 && (
+                                <button
+                                    onClick={handlePreviousQuestion}
+                                    className="w-1/2 bg-yellow-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-yellow-700 shadow-lg"
+                                >
+                                    Previous
+                                </button>
+                            )}
+                            <button
+                                onClick={handleNextQuestion}
+                                className="w-1/2 bg-green-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-green-700 shadow-lg"
+                            >
+                                {currentQuestionIndex < quizData.length - 1 ? 'Next' : 'Submit'}
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Recommendations */}
                 {Array.isArray(recommendations) && recommendations.length > 0 && (
                     <div className="mt-8 p-6 bg-gray-100 rounded-md shadow-md">
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">Recommended Fields Based on Your Interests:</h2>
@@ -146,7 +191,6 @@ const Quiz = () => {
                 )}
             </div>
 
-            {/* Toast notifications container */}
             <ToastContainer />
         </div>
     );
