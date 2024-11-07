@@ -21,8 +21,7 @@ const Login = () => {
         email,
         password,
       });
-      // Navigate to another page upon successful login
-      navigate('/dashboard'); // Adjust route based on your app's structure
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error during login:', error);
       setErrorMessage('Login failed! Please check your credentials.');
@@ -30,36 +29,36 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center  justify-center min-h-screen bg-gradient-to-r from-black via-gray-900 to-black">
-      <div className="bg-gray-800 scale-125 rounded-lg shadow-lg p-8 z-50 max-w-sm w-full">
-        <h2 className="text-3xl font-bold text-center text-blue-400 mb-6 duolingo-font">Log In</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 nunito-font">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500">
+      <div className="bg-white rounded-lg shadow-lg p-8 z-50 max-w-sm w-full">
+        <h2 className="text-4xl font-bold text-center duolingo-font text-blue-600 mb-6">Log In</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-100 mb-2">Email</label>
+            <label className="block text-gray-700 mb-2">Email</label>
             <input
               type="email"
               value={email}
-              placeholder='tonystark@gmail.com'
+              placeholder="tonystark@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-blue-100 text-gray-700 border border-blue-200 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
           <div>
-            <label className="block text-gray-100 mb-2">Password</label>
+            <label className="block text-gray-700 mb-2">Password</label>
             <div className="relative">
               <input
                 type={passwordVisible ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                placeholder='********'
-                className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+                placeholder="********"
+                className="w-full px-4 py-2 bg-blue-100 text-gray-700 border border-blue-200 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={() => setPasswordVisible(!passwordVisible)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-100 hover:text-gray-200"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
               >
                 {passwordVisible ? <IoEyeOffOutline /> : <IoEyeOutline />}
               </button>
@@ -75,11 +74,11 @@ const Login = () => {
             Log In
           </button>
         </form>
-        <p className="text-center text-gray-100 mt-4">
+        <p className="text-center text-gray-700 mt-4">
           Don't have an account?{' '}
           <button
             onClick={() => navigate('/signup')}
-            className="text-blue-400 hover:underline"
+            className="text-blue-600 hover:underline"
           >
             Create Account
           </button>

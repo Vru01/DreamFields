@@ -8,11 +8,12 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
+  const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,6 +24,7 @@ const Signup = () => {
         name,
         email,
         age,
+        city,
         password,
       });
 
@@ -30,112 +32,124 @@ const Signup = () => {
       setName('');
       setEmail('');
       setAge('');
+      setCity('');
       setPassword('');
       setConfirmPassword('');
-      
-      // Handle successful signup here
+
+      // Redirect or show success message after signup
+      navigate('/dashboard'); // Adjust route based on your app's structure
     } catch (error) {
       console.error('Error during signup:', error);
-      // Handle error here
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-900">
-      <div className="bg-gray-800 scale-105 text-white rounded-lg shadow-lg p-8 z-50 max-w-md w-full">
-        <h2 className="text-4xl font-bold text-center duolingo-font text-gray-200 mb-4">Create an Account</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 nunito-font">
-          <div>
-            <label className="block text-gray-100 mb-2">Name</label>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 via-blue-400 to-blue-500">
+      <div className="bg-white text-gray-800 rounded-lg shadow-lg p-8 z-50 w-full max-w-3xl">
+        <h2 className="text-3xl font-bold text-center duolingo-font text-blue-600 mb-6">Create an Account</h2>
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4 nunito-font">
+          <div className="col-span-2 sm:col-span-1">
+            <label className="block text-gray-700 mb-1">Name</label>
             <input
               type="text"
               value={name}
-              placeholder='Tony Stark'
+              placeholder="Tony Stark"
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-700 bg-gray-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
-          <div>
-            <label className="block text-gray-100 mb-2">Email</label>
+          <div className="col-span-2 sm:col-span-1">
+            <label className="block text-gray-700 mb-1">Email</label>
             <input
               type="email"
               value={email}
-              placeholder='tonystark@gmail.com'
+              placeholder="tonystark@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-700 bg-gray-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
-          <div>
-            <label className="block text-gray-100 mb-2">Age</label>
+          <div className="col-span-2 sm:col-span-1">
+            <label className="block text-gray-700 mb-1">Age</label>
             <input
               type="number"
               value={age}
-              placeholder='12'
+              placeholder="12"
               onChange={(e) => setAge(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-700 bg-gray-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
-          <div>
-            <label className="block text-gray-100 mb-2">Password</label>
+          <div className="col-span-2 sm:col-span-1">
+            <label className="block text-gray-700 mb-1">City of India</label>
+            <input
+              type="text"
+              value={city}
+              placeholder="Mumbai"
+              onChange={(e) => setCity(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+            />
+          </div>
+          <div className="col-span-2 sm:col-span-1">
+            <label className="block text-gray-700 mb-1">Password</label>
             <div className="relative">
               <input
                 type={passwordVisible ? 'text' : 'password'}
                 value={password}
-                placeholder=''
+                placeholder="********"
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-700 bg-gray-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={() => setPasswordVisible(!passwordVisible)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-100 hover:text-gray-200"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
               >
-                {passwordVisible ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                {passwordVisible ? <IoEyeOffOutline /> : <IoEyeOutline />}
               </button>
             </div>
           </div>
-          <div>
-            <label className="block text-gray-100 mb-2">Confirm Password</label>
+          <div className="col-span-2 sm:col-span-1">
+            <label className="block text-gray-700 mb-1">Confirm Password</label>
             <div className="relative">
               <input
                 type={confirmPasswordVisible ? 'text' : 'password'}
                 value={confirmPassword}
-                placeholder=''
+                placeholder="********"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-700 bg-gray-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-100 hover:text-gray-200"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
               >
-                {confirmPasswordVisible ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                {confirmPasswordVisible ? <IoEyeOffOutline /> : <IoEyeOutline />}
               </button>
             </div>
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500 transition duration-200"
+            className="col-span-2 w-1/2 mx-auto bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500 transition duration-200"
           >
             Sign Up
           </button>
         </form>
-        <p className="text-center text-gray-100 mt-4">
+        <p className="text-center text-gray-700 mt-6">
           Already have an account?{' '}
           <button
             onClick={() => navigate('/login')}
-            className="text-blue-400 hover:text-blue-500 hover:underline"
+            className="text-blue-600 hover:text-blue-700 hover:underline"
           >
             Log In
           </button>
         </p>
       </div>
-      <Snowfall/>
+      <Snowfall />
     </div>
   );
 };
