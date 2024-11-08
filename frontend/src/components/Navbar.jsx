@@ -17,11 +17,11 @@ const Navbar = () => {
         {/* Logo */}
         <a href="#hero" className="flex items-center space-x-2">
           <img src={logo} alt="DreamFields Logo" className="h-8" />
-          <h1 className="text-lg font-semibold">DreamFields</h1>
+          <h1 className="translate-y-1 font-bold text-xl">DreamFields</h1>
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex  space-x-8 text-black ">
+        <nav className="hidden lg:flex translate-y-2 space-x-8 text-black font-bold text-lg ">
           <ul className="flex space-x-6 lg:items-center">
             <li><a href="#hero" className="hover:text-gray-600">Home</a></li>
             <li><a href="#about" className="hover:text-gray-600">About</a></li>

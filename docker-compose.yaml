@@ -1,0 +1,31 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./Server  # Path to your backend directory
+      dockerfile: Dockerfile  # You can specify the Dockerfile name here if different
+    container_name: backend-container
+    ports:
+      - "5000:5000"  # Expose backend port (adjust if needed)
+    environment:
+      - NODE_ENV=production  # You can add any necessary environment variables for your backend
+    volumes:
+      - ./backend:/app  # Mount your backend directory as a volume (if needed for live code updates)
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend  # Path to your frontend directory
+      dockerfile: Dockerfile  # Specify the frontend Dockerfile if it's not named 'Dockerfile'
+    container_name: frontend-container
+    ports:
+      - "3000:3000"  # Expose frontend port (adjust if needed)
+    depends_on:
+      - backend  # Ensure frontend waits for backend to be ready
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

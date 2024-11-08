@@ -66,7 +66,7 @@ const Dashboard = () => {
   ];
   
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-white text-gray-800">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-white text-gray-800 ">
 
   {/* Main Content */}
   <main className="flex-1 p-4 overflow-y-auto rounded-md  h-screen bg-gray-50">
@@ -75,12 +75,12 @@ const Dashboard = () => {
         <i className="bx bx-menu"></i>
       </button>
       <h5 className="nunito-font text-xl">
-        Hello <b className="bg-gradient-to-r font-extrabold text-2xl from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">REZA</b>, welcome back!
+        Hello <b className="bg-gradient-to-r font-extrabold text-2xl from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Arjun</b>, welcome back!
       </h5>
     </header>
 
     {/* My Courses */}
-    <div className="flex justify-between items-center my-6">
+    <div className="flex justify-between items-center my-6 max-w-screen-2xl mx-auto ">
       <div>
         <h3 className="text-3xl font-semibold duolingo-font text-gray-800 py-2">
           Explore your <span className="text-4xl font-bold bg-gradient-to-r from-blue-500 via-blue-300 to-blue-500 bg-clip-text text-transparent">DreamFields</span>
@@ -93,9 +93,9 @@ const Dashboard = () => {
     </div>
 
     {/* Custom Cards Section */}
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 max-w-screen-2xl mx-auto ">
       {fields.map((field, index) => (
-        <div key={index} className="bg-white hover:border-blue-300 border-2 border-b-4 border-blue-100 hover:scale-105 transition-all duration-150 relative p-4 pb-2 rounded-lg shadow-md">
+        <div key={index} className="bg-white hover:border-blue-300 border-2 border-b-4 border-blue-100 hover:scale-105 transition-all duration-150 relative p-4 pb-2 rounded-lg shadow-md ">
           <div className="flex">
             <div className="flex-grow">
               <h5 className="text-2xl Arial-font mb-2 text-blue-600">{field.title}</h5>
@@ -105,14 +105,14 @@ const Dashboard = () => {
             <i className={`${field.icon} text-4xl text-blue-800 mb-2`}></i>
           </div>
           <Link to={field.link}>
-            <button type="button" className="text-white my-2 bg-gradient-to-br from-blue-500 via-blue-400 to-blue-500 font-bold rounded-lg text-md uppercase px-5 py-2.5 text-center">Explore</button>
+            <button type="button" className=" text-white my-2  bg-gradient-to-br from-blue-500 via-blue-400 to-blue-500 font-bold rounded-lg text-md uppercase px-5 py-2.5 text-center">Explore</button>
           </Link>
         </div>
       ))}
     </div>
 
     {/* Planning Section */}
-    <div className="flex justify-between items-center mb-6">
+    <div className="flex justify-between items-center mb-6 max-w-screen-2xl mx-auto ">
       <div className="flex justify-between w-screen">
         <h3 className="text-lg font-semibold text-gray-800">Planning</h3>
         <a href="#" className="text-blue-500">View All</a>
@@ -120,14 +120,14 @@ const Dashboard = () => {
     </div>
 
     {/* Activities Section */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 max-w-screen-2xl mx-auto ">
       {[
             {
               title: "Explore Interests",
               description: "Discover various subjects and find out what piques your curiosity.",
               buttonLabel: "Start Exploring",
               icon: "bx-compass",
-              link: "/explore-interests"
+              link: "/dashboard"
             },
             {
               title: "Take a Quiz",

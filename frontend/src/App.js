@@ -2,6 +2,9 @@ import './App.css';
 import {Routes , Route} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
 
 import Homepage from './pages/Homepage';
 import Login from './components/Login.jsx' ;
@@ -12,7 +15,18 @@ import Astronomy from './components/Astronomy/Astronomy.jsx'
 import Loader from './components/Loaders/Loader1.jsx';
 import Quiz2 from './components/Quiz/quiz.jsx';
 
+import Courses from './pages/courses.jsx'
+
 function App() {
+
+  useEffect(() => {
+    // Initialize AOS
+    AOS.init({
+      duration: 1000, // Animation duration (in milliseconds)
+       // Whether animation should only happen once or every time
+    });
+  }, []);
+
   return (
     <div className="w-full h-full">
       <Routes>
@@ -26,6 +40,8 @@ function App() {
 
         <Route path='/loader' element= {<Loader />} />
         <Route path='/demo' element= {<Quiz2 />} />
+
+        <Route path='dash' element= {<Courses />} />
 
       </Routes>
     </div>

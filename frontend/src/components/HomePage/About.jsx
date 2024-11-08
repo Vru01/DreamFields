@@ -7,7 +7,7 @@ const About = () => {
   return (
     <section id="about" className="py-16 bg-gray-100">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center ">
           <div className="w-full lg:w-1/2 mb-8 lg:mb-0" data-aos="fade-up" data-aos-delay="100">
             <p className="text-xl text-yellow-600 font-semibold">Who We Are</p>
             <h3 className="text-3xl font-bold text-gray-800 mt-4 mb-6">
@@ -42,13 +42,13 @@ const About = () => {
             </a>
           </div>
 
-          <div className="w-full lg:w-1/2" data-aos="fade-up" data-aos-delay="200">
+          <div className="w-full lg:w-1/2 mt-16 " data-aos="fade-up" data-aos-delay="200">
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 lg:col-span-1">
-                <img src={aboutCompany1} className="rounded-lg shadow-lg object-cover w-full h-64" alt="About Company 1" />
+                <img src={aboutCompany1} className="rounded-lg shadow-lg object-cover w-full h-72" alt="About Company 1" />
               </div>
               <div className="col-span-2 lg:col-span-1 space-y-4">
-                <img src={aboutCompany2} className="rounded-lg shadow-lg object-cover w-full h-32" alt="About Company 2" />
+                <img src={aboutCompany2} className="rounded-lg shadow-lg object-cover w-full h-36" alt="About Company 2" />
                 <img src={aboutCompany3} className="rounded-lg shadow-lg object-cover w-full h-32" alt="About Company 3" />
               </div>
             </div>
