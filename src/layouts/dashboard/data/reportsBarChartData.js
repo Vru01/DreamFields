@@ -14,6 +14,6 @@ Coded by www.creative-tim.com
 */
 
 export default {
-  labels: ["M", "T", "W", "T", "F", "S", "S"],
-  datasets: { label: "Time", data: [50, 20, 10, 22, 10, 0, 0] },
+  labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+  datasets: { label: 'Time', data: [50, 20, 10, 22, 10, 0, 0] },
 };

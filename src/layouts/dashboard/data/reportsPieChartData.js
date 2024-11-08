@@ -14,12 +14,11 @@ Coded by www.creative-tim.com
 */
 
 export default {
-  sales: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Mobile apps", data: [50, 40, 300, 320, 500, 350, 200, 230, 500] },
-  },
-  tasks: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Desktop apps", data: [50, 40, 300, 220, 500, 250, 400, 230, 500] },
-  },
+  labels: ['Math', 'Science', 'English', 'History', 'Geography'], // Subjects
+  datasets: [
+    {
+      data: [25, 20, 30, 15, 10], // Percentages for each subject
+      backgroundColor: ['#3b82f6', '#8b5cf6', '#ec4899', '#22c55e', '#f59e0b'], // Colors for each slice
+    },
+  ],
 };

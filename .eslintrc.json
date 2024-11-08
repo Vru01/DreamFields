@@ -16,9 +16,13 @@
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "auto"
+        "endOfLine": "auto",
+        "tabWidth": 2,
+        "singleQuote": true,
+        "semi": true
       }
     ],
+
     "react/display-name": "off",
     "default-param-last": "off",
     "react/react-in-jsx-scope": "off",
