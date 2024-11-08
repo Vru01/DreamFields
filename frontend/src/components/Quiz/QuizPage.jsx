@@ -6,8 +6,9 @@ import { StarsBackground } from '../Helper/stars-background';
 import BTN from '../Common/CButton';
 import Loader from '../Loaders/Loader1';
 
-import img1 from '../../assets/img2.png';  // Image for the start phase
-import img2 from '../../assets/img2.png';  // Image for loading phase
+import img1 from '../../assets/img2.png'; 
+import img2 from '../../assets/img2.png'; 
+import quizimg from '../../assets/quiz2.png'
 
 
 const Quiz = () => {
@@ -63,6 +64,7 @@ const Quiz = () => {
     // Submit Answers Function
     const submitAnswers = async () => {
         setLoading(true);
+        <Loader />
         try {
             await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
             const recommendationResponse = await axios.get('http://localhost:5000/api/v1/quiz/getLatestRecommendation');
@@ -124,21 +126,20 @@ const Quiz = () => {
                         opacity: '100%'
                     }}
                 >
-                    <div className="translate-y-2/4 h-full w-full ">
+                    <div className="translate-y-1/4 h-full w-full ">
                         <div className="max-w-xl w-full mx-auto z-20">
-                        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Quiz Time!</h1>
+                        <img src={quizimg} alt='quizing' />
                             <button
                                 onClick={startQuiz}
                                 className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md 
                                 transition duration-300 ease-in-out hover:bg-blue-700 mb-6 shadow-lg transform hover:scale-105"
                                 disabled={loading}
                             >
-                                {loading ? 'The quiz will start soon...' : 'Start Quiz'}
+                                { "It's Quiz O'Clock!"}
                             </button>
                         </div>
                     </div>
-
-                    {/* Overlay and Loader */}
+                    {/* Loader */}
                     {loading && (
                         <div className="absolute inset-0  bg-opacity-100 flex flex-col items-center justify-center z-30 backdrop-blur-sm">
                             <Loader />
@@ -147,7 +148,6 @@ const Quiz = () => {
                 </div>
             )}
 
-            {loading && <Loader />}
 
             {/* Questions Section with img2 */}
             {quizStarted && quizData.length > 0 && recommendations.length === 0 && (
@@ -182,7 +182,7 @@ const Quiz = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="flex space-x-4">
+                        <div className="flex justify-between space-x-4">
                             {currentQuestionIndex > 0 && (
                                 <button
                                     onClick={handlePreviousQuestion}
@@ -193,47 +193,56 @@ const Quiz = () => {
                             )}
                             <button
                                 onClick={handleNextQuestion}
-                                className="w-1/2 bg-purple-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-purple-800 shadow-lg"
+                                className="w-1/2 bg-purple-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out hover:bg-purple-800 shadow-lg ml-auto"
                             >
                                 {currentQuestionIndex < quizData.length - 1 ? 'Next' : 'Submit'}
                             </button>
                         </div>
+
                     </div>
                 </div>
             )}
 
             {/* Recommendations Section with img3 */}
+            {loading && (
+                        <div className="absolute inset-0  bg-opacity-100 flex flex-col items-center justify-center z-30 backdrop-blur-sm">
+                            <Loader />
+                        </div>
+            )}
             {Array.isArray(recommendations) && recommendations.length > 0 && (
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-[70%] w-full z-20 mt-8 scale-110"
+                // <div className="bg-white p-8 rounded-lg shadow-lg max-w-[70%] w-full z-20 mt-8 scale-110"
+                <div className='absolute inset-0 bg-cover bg-center z-20'
                 style={{backgroundImage: `url(${img2})`, 
                 height: '100vh', 
                 width: '100vw' }}
                 >
-                    <h2 className="text-4xl text-center font-bold text-purple-900 mb-14">
-                        Recommended Fields Based on Your Interests
-                    </h2>
-                    <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 max-w-7xl ">
-                        {recommendations.map((rec, index) => (
-                        <div
-                        key={index}
-                        className="
-                        relative bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-lg shadow-2xl transform hover:scale-105 
-                        transition-transform duration-300 ease-in-out hover:shadow-xl min-h-fit "
-                        >
-                            <h3 className="text-xl font-bold text-gray-800 mb-2">
-                                {rec.field}
-                            </h3>
-                            <p className="text-md font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full w-fit mb-3 shadow-sm">
-                                Interest Level: {rec.percent_interest}%
-                            </p>
-                            <p className="text-gray-600 mt-1 mb-14 leading-relaxed">
-                                {rec.description}
-                            </p>
-                            <div className="absolute bottom-4 right-4">
-                                <BTN text={"Explore Now"} link={"/"} color={true} />
+                    <div className='flex flex-col items-center justify-center mt-10'>
+                        <h2 className="text-4xl text-center  font-bold text-purple-900 mb-14">
+                            Recommended Fields Based on Your Interests
+                        </h2>
+                        <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 max-w-7xl ">
+                            {recommendations.map((rec, index) => (
+                            <div
+                            key={index}
+                            className="
+                            relative bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-lg shadow-2xl transform hover:scale-105 
+                            transition-transform duration-300 ease-in-out hover:shadow-xl min-h-fit "
+                            >
+                                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                                    {rec.field}
+                                </h3>
+                                <p className="text-md font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full w-fit mb-3 shadow-sm">
+                                    Interest Level: {rec.percent_interest}%
+                                </p>
+                                <p className="text-gray-600 mt-1 mb-14 leading-relaxed">
+                                    {rec.description}
+                                </p>
+                                <div className="absolute bottom-4 right-4">
+                                    <BTN text={"Explore Now"} link={"/"} color={true} />
+                                </div>
                             </div>
+                            ))}
                         </div>
-                        ))}
                     </div>
                 </div>
             )}
