@@ -30,7 +30,7 @@ const Quiz = () => {
     const startQuiz = async () => {
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/v1/quiz/startQuiz');
+            await axios.post('https://dreamfields-phsk.onrender.com/api/v1/quiz/startQuiz');
             fetchQuiz();
             setLoading(false);
         } catch (error) {
@@ -42,7 +42,7 @@ const Quiz = () => {
     // Fetch Quiz Questions Function
     const fetchQuiz = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/v1/quiz/getQuiz');
+            const response = await axios.get('https://dreamfields-phsk.onrender.com/api/v1/quiz/getQuiz');
             setQuizData(response.data.quiz.questions);
             setQuizStarted(true);
         } catch (error) {
@@ -66,8 +66,8 @@ const Quiz = () => {
         setLoading(true);
         <Loader />
         try {
-            await axios.post('http://localhost:5000/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
-            const recommendationResponse = await axios.get('http://localhost:5000/api/v1/quiz/getLatestRecommendation');
+            await axios.post('https://dreamfields-phsk.onrender.com/api/v1/quiz/submitAnswers', { answers: selectedAnswers });
+            const recommendationResponse = await axios.get('https://dreamfields-phsk.onrender.com/api/v1/quiz/getLatestRecommendation');
             setRecommendations(recommendationResponse.data.recommendation.recommendedFields || []);
             toast.success('Answers submitted successfully and recommendations fetched!', {
                 position: "top-right",
