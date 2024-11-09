@@ -20,7 +20,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      await axios.post('https://dreamfields-phsk.onrender.com/api/v1/signup', {
+      await axios.post('http://localhost:5000/api/v1/signup', {
         name,
         email,
         age,
